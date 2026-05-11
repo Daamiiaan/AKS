@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="SchoolRegister.DAL/SchoolRegister.DAL.csproj" />
+  <Project Path="SchoolRegister.Model/SchoolRegister.Model.csproj" />
+  <Project Path="SchoolRegister.Services/SchoolRegister.Services.csproj" />
+  <Project Path="SchoolRegister.ViewModels/SchoolRegister.ViewModels.csproj" />
+  <Project Path="SchoolRegister.Web/SchoolRegister.Web.csproj" />
+</Solution>

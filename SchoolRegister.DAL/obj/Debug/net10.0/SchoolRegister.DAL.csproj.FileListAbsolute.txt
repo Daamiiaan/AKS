@@ -1,0 +1,15 @@
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/bin/Debug/net10.0/SchoolRegister.DAL.deps.json
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/bin/Debug/net10.0/SchoolRegister.DAL.dll
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/bin/Debug/net10.0/SchoolRegister.DAL.pdb
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/bin/Debug/net10.0/SchoolRegister.Model.dll
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/bin/Debug/net10.0/SchoolRegister.Model.pdb
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/obj/Debug/net10.0/SchoolRegister.DAL.csproj.AssemblyReference.cache
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/obj/Debug/net10.0/SchoolRegister.DAL.GeneratedMSBuildEditorConfig.editorconfig
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/obj/Debug/net10.0/SchoolRegister.DAL.AssemblyInfoInputs.cache
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/obj/Debug/net10.0/SchoolRegister.DAL.AssemblyInfo.cs
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/obj/Debug/net10.0/SchoolRegister.DAL.csproj.CoreCompileInputs.cache
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/obj/Debug/net10.0/SchoolRe.0EB9A3CA.Up2Date
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/obj/Debug/net10.0/SchoolRegister.DAL.dll
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/obj/Debug/net10.0/refint/SchoolRegister.DAL.dll
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/obj/Debug/net10.0/SchoolRegister.DAL.pdb
+/home/damian/Pulpit/AKS/AKS/SchoolRegister.DAL/obj/Debug/net10.0/ref/SchoolRegister.DAL.dll
