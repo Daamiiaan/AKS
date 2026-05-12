@@ -15,4 +15,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.26" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SchoolRegister.Model\SchoolRegister.Model.csproj" />
+    <ProjectReference Include="..\SchoolRegister.ViewModels\SchoolRegister.ViewModels.csproj" />
+    <ProjectReference Include="..\SchoolRegister.Services\SchoolRegister.Services.csproj" />
+    <ProjectReference Include="..\SchoolRegister.DAL\SchoolRegister.DAL.csproj" />
+  </ItemGroup>
+
 </Project>
