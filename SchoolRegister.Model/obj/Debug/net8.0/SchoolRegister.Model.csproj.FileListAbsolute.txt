@@ -1,0 +1,13 @@
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.Model\bin\Debug\net8.0\SchoolRegister.Model.deps.json
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.Model\bin\Debug\net8.0\SchoolRegister.Model.dll
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.Model\bin\Debug\net8.0\SchoolRegister.Model.pdb
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.Model\obj\Debug\net8.0\SchoolRegister.Model.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.Model\obj\Debug\net8.0\SchoolRegister.Model.AssemblyInfoInputs.cache
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.Model\obj\Debug\net8.0\SchoolRegister.Model.AssemblyInfo.cs
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.Model\obj\Debug\net8.0\SchoolRegister.Model.csproj.CoreCompileInputs.cache
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.Model\obj\Debug\net8.0\SchoolRegister.Model.sourcelink.json
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.Model\obj\Debug\net8.0\SchoolRegister.Model.dll
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.Model\obj\Debug\net8.0\refint\SchoolRegister.Model.dll
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.Model\obj\Debug\net8.0\SchoolRegister.Model.pdb
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.Model\obj\Debug\net8.0\ref\SchoolRegister.Model.dll
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.Model\obj\Debug\net8.0\SchoolRegister.Model.csproj.AssemblyReference.cache

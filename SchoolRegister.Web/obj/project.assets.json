@@ -1660,6 +1660,60 @@
             "rid": "win"
           }
         }
+      },
+      "SchoolRegister.DAL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "SchoolRegister.Model": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/SchoolRegister.DAL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SchoolRegister.DAL.dll": {}
+        }
+      },
+      "SchoolRegister.Model/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Microsoft.Extensions.Identity.Stores": "8.0.2"
+        },
+        "compile": {
+          "bin/placeholder/SchoolRegister.Model.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SchoolRegister.Model.dll": {}
+        }
+      },
+      "SchoolRegister.Services/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "SchoolRegister.DAL": "1.0.0",
+          "SchoolRegister.Model": "1.0.0",
+          "SchoolRegister.ViewModels": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/SchoolRegister.Services.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SchoolRegister.Services.dll": {}
+        }
+      },
+      "SchoolRegister.ViewModels/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "SchoolRegister.Model": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/SchoolRegister.ViewModels.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SchoolRegister.ViewModels.dll": {}
+        }
       }
     }
   },
@@ -4437,6 +4491,26 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "SchoolRegister.DAL/1.0.0": {
+      "type": "project",
+      "path": "../SchoolRegister.DAL/SchoolRegister.DAL.csproj",
+      "msbuildProject": "../SchoolRegister.DAL/SchoolRegister.DAL.csproj"
+    },
+    "SchoolRegister.Model/1.0.0": {
+      "type": "project",
+      "path": "../SchoolRegister.Model/SchoolRegister.Model.csproj",
+      "msbuildProject": "../SchoolRegister.Model/SchoolRegister.Model.csproj"
+    },
+    "SchoolRegister.Services/1.0.0": {
+      "type": "project",
+      "path": "../SchoolRegister.Services/SchoolRegister.Services.csproj",
+      "msbuildProject": "../SchoolRegister.Services/SchoolRegister.Services.csproj"
+    },
+    "SchoolRegister.ViewModels/1.0.0": {
+      "type": "project",
+      "path": "../SchoolRegister.ViewModels/SchoolRegister.ViewModels.csproj",
+      "msbuildProject": "../SchoolRegister.ViewModels/SchoolRegister.ViewModels.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4445,7 +4519,11 @@
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.26",
       "Microsoft.AspNetCore.Identity.UI >= 8.0.26",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.26",
-      "Microsoft.EntityFrameworkCore.Tools >= 8.0.26"
+      "Microsoft.EntityFrameworkCore.Tools >= 8.0.26",
+      "SchoolRegister.DAL >= 1.0.0",
+      "SchoolRegister.Model >= 1.0.0",
+      "SchoolRegister.Services >= 1.0.0",
+      "SchoolRegister.ViewModels >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -4474,7 +4552,20 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Damian\\Documents\\aks1\\AKS\\SchoolRegister.DAL\\SchoolRegister.DAL.csproj": {
+              "projectPath": "C:\\Users\\Damian\\Documents\\aks1\\AKS\\SchoolRegister.DAL\\SchoolRegister.DAL.csproj"
+            },
+            "C:\\Users\\Damian\\Documents\\aks1\\AKS\\SchoolRegister.Model\\SchoolRegister.Model.csproj": {
+              "projectPath": "C:\\Users\\Damian\\Documents\\aks1\\AKS\\SchoolRegister.Model\\SchoolRegister.Model.csproj"
+            },
+            "C:\\Users\\Damian\\Documents\\aks1\\AKS\\SchoolRegister.Services\\SchoolRegister.Services.csproj": {
+              "projectPath": "C:\\Users\\Damian\\Documents\\aks1\\AKS\\SchoolRegister.Services\\SchoolRegister.Services.csproj"
+            },
+            "C:\\Users\\Damian\\Documents\\aks1\\AKS\\SchoolRegister.ViewModels\\SchoolRegister.ViewModels.csproj": {
+              "projectPath": "C:\\Users\\Damian\\Documents\\aks1\\AKS\\SchoolRegister.ViewModels\\SchoolRegister.ViewModels.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -1,0 +1,16 @@
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\bin\Debug\net8.0\SchoolRegister.ViewModels.deps.json
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\bin\Debug\net8.0\SchoolRegister.ViewModels.dll
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\bin\Debug\net8.0\SchoolRegister.ViewModels.pdb
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\bin\Debug\net8.0\SchoolRegister.Model.dll
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\bin\Debug\net8.0\SchoolRegister.Model.pdb
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\obj\Debug\net8.0\SchoolRegister.ViewModels.csproj.AssemblyReference.cache
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\obj\Debug\net8.0\SchoolRegister.ViewModels.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\obj\Debug\net8.0\SchoolRegister.ViewModels.AssemblyInfoInputs.cache
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\obj\Debug\net8.0\SchoolRegister.ViewModels.AssemblyInfo.cs
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\obj\Debug\net8.0\SchoolRegister.ViewModels.csproj.CoreCompileInputs.cache
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\obj\Debug\net8.0\SchoolRegister.ViewModels.sourcelink.json
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\obj\Debug\net8.0\SchoolRe.74268CC5.Up2Date
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\obj\Debug\net8.0\SchoolRegister.ViewModels.dll
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\obj\Debug\net8.0\refint\SchoolRegister.ViewModels.dll
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\obj\Debug\net8.0\SchoolRegister.ViewModels.pdb
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.ViewModels\obj\Debug\net8.0\ref\SchoolRegister.ViewModels.dll
