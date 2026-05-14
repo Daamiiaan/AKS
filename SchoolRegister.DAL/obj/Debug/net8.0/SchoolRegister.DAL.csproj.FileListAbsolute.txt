@@ -14,3 +14,5 @@ C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.DAL\obj\Debug\net8.0\SchoolReg
 C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.DAL\obj\Debug\net8.0\refint\SchoolRegister.DAL.dll
 C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.DAL\obj\Debug\net8.0\SchoolRegister.DAL.pdb
 C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.DAL\obj\Debug\net8.0\ref\SchoolRegister.DAL.dll
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.DAL\bin\Debug\net8.0\SchoolRegister.DAL.runtimeconfig.json
+C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.DAL\obj\Debug\net8.0\SchoolRegister.DAL.genruntimeconfig.cache
