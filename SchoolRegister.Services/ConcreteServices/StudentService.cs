@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using SchoolRegister.DAL.EF;
@@ -12,17 +16,38 @@ namespace SchoolRegister.Services.ConcreteServices
         public StudentService(ApplicationDbContext dbContext, IMapper mapper, ILogger logger)
             : base(dbContext, mapper, logger) { }
 
-        public StudentVm? GetStudent(int id)
+        public StudentVm GetStudent(Expression<Func<Student, bool>> filterPredicate)
         {
-            var student = DbContext.Users.OfType<Student>().FirstOrDefault(s => s.Id == id);
-            return student == null ? null : Mapper.Map<StudentVm>(student);
+            try
+            {
+                if (filterPredicate == null)
+                    throw new ArgumentNullException("FilterPredicate is null");
+
+                var student = DbContext.Users.OfType<Student>().FirstOrDefault(filterPredicate);
+                return Mapper.Map<StudentVm>(student);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, ex.Message);
+                throw;
+            }
         }
 
-        public IEnumerable<StudentVm> GetStudents(Func<StudentVm, bool>? filterPredicate = null)
+        public IEnumerable<StudentVm> GetStudents(Expression<Func<Student, bool>> filterPredicate = null)
         {
-            var students = DbContext.Users.OfType<Student>().ToList();
-            var studentVms = Mapper.Map<IEnumerable<StudentVm>>(students);
-            return filterPredicate == null ? studentVms : studentVms.Where(filterPredicate);
+            try
+            {
+                var students = DbContext.Users.OfType<Student>().AsQueryable();
+                if (filterPredicate != null)
+                    students = students.Where(filterPredicate);
+
+                return Mapper.Map<IEnumerable<StudentVm>>(students.ToList());
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, ex.Message);
+                throw;
+            }
         }
     }
 }

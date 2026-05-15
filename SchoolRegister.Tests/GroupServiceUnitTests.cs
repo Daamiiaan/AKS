@@ -1,9 +1,10 @@
+using System.Linq;
 using SchoolRegister.DAL.EF;
 using SchoolRegister.Services.Interfaces;
 using SchoolRegister.ViewModels.VM;
 using Xunit;
 
-namespace SchoolRegister.Tests
+namespace SchoolRegister.Tests.UnitTests
 {
     public class GroupServiceUnitTests : BaseUnitTests
     {
@@ -16,44 +17,130 @@ namespace SchoolRegister.Tests
         }
 
         [Fact]
-        public void GetGroup_ExistingId_ReturnsGroupVm()
+        public void GetGroup()
         {
-            var result = _groupService.GetGroup(1);
-            Assert.NotNull(result);
-            Assert.Equal("3A", result.Name);
+            var addedGroup = _groupService.GetGroup(x => x.Name == "PAI");
+            Assert.NotNull(addedGroup);
         }
 
         [Fact]
-        public void GetGroups_ReturnsAll()
+        public void GetGroups()
         {
-            var result = _groupService.GetGroups();
-            Assert.Equal(2, result.Count());
+            var groups = _groupService.GetGroups(x => x.Id >= 1 && x.Id <= 2)
+                .ToList();
+            Assert.NotNull(groups);
+            Assert.NotEmpty(groups);
+            Assert.Equal(2, groups.Count());
         }
 
         [Fact]
-        public void AddOrUpdateGroup_NewGroup_AddsGroup()
+        public void GetAllGroups()
         {
-            var vm = new AddOrUpdateGroupVm { Name = "4C" };
-            var result = _groupService.AddOrUpdateGroup(vm);
-            Assert.NotNull(result);
-            Assert.Equal("4C", result.Name);
+            var groups = _groupService.GetGroups().ToList();
+            Assert.NotNull(groups);
+            Assert.NotEmpty(groups);
+            Assert.Equal(3, groups.Count());
         }
 
         [Fact]
-        public void AttachStudentToGroup_ValidIds_StudentInGroup()
+        public void AddGroup()
         {
-            // Student 5 is in group 1 from seed; move her to group 2
-            var vm = new AttachDetachStudentToGroupVm { StudentId = 5, GroupId = 2 };
-            var result = _groupService.AttachStudentToGroup(vm);
-            Assert.NotNull(result);
+            var addOrUpdateGroupVm = new AddOrUpdateGroupVm { Name = "SK" };
+            _groupService.AddOrUpdateGroup(addOrUpdateGroupVm);
+            Assert.Equal(4, DbContext.Groups.Count());
+            var addedGroup = _groupService.GetGroup(x => x.Name == "SK");
+            Assert.NotNull(addedGroup);
         }
 
         [Fact]
-        public void AttachSubjectToGroup_ValidIds_SubjectInGroup()
+        public void UpdateGroup()
         {
-            var vm = new AttachDetachSubjectGroupVm { SubjectId = 3, GroupId = 1 };
-            var result = _groupService.AttachSubjectToGroup(vm);
-            Assert.NotNull(result);
+            var addOrUpdateGroupVm = new AddOrUpdateGroupVm { Name = "SIiDM", Id = 3 };
+            _groupService.AddOrUpdateGroup(addOrUpdateGroupVm);
+            var addedGroup = _groupService.GetGroup(x => x.Name == "SIiDM");
+            Assert.NotNull(addedGroup);
+        }
+
+        [Fact]
+        public void AttachStudentToGroup()
+        {
+            var attachStudentToGroupVm = new AttachDetachStudentToGroupVm()
+            {
+                GroupId = 1,
+                StudentId = 7   // s3: initially in PAI (group 2), moves to IO (group 1)
+            };
+            var student = _groupService.AttachStudentToGroup(attachStudentToGroupVm);
+            Assert.True(student.GroupName == "IO");
+            var group = _groupService.GetGroup(g => g.Id == attachStudentToGroupVm.GroupId);
+            Assert.NotNull(group);
+            Assert.NotNull(group.Students.FirstOrDefault(x => x.Id == 7));
+        }
+
+        [Fact]
+        public void DetachStudentFromGroup()
+        {
+            var detachStudentToGroupVm = new AttachDetachStudentToGroupVm()
+            {
+                GroupId = 1,
+                StudentId = 7   // remove student 7 from any group
+            };
+            var student = _groupService.DetachStudentFromGroup(detachStudentToGroupVm);
+            Assert.NotNull(student);
+            Assert.Null(student.GroupName);
+        }
+
+        [Fact]
+        public void AttachSubjectToGroup()
+        {
+            var attachSubjectGroupVm = new AttachDetachSubjectGroupVm()
+            {
+                GroupId = 1,
+                SubjectId = 4   // Subject 4 is not yet in group IO (1)
+            };
+            _groupService.AttachSubjectToGroup(attachSubjectGroupVm);
+            var group = _groupService.GetGroup(g => g.Id == attachSubjectGroupVm.GroupId);
+            Assert.NotNull(group);
+            Assert.NotNull(group.Subjects.FirstOrDefault(s => s.Name == "Administracja Intenetowymi Systemami Baz Danych"));
+        }
+
+        [Fact]
+        public void DetachSubjectFromGroup()
+        {
+            var detachSubjectGroupVm = new AttachDetachSubjectGroupVm()
+            {
+                GroupId = 2,
+                SubjectId = 4   // Subject 4 IS in group PAI (2) from seed data
+            };
+            var group = _groupService.DetachSubjectFromGroup(detachSubjectGroupVm);
+            Assert.NotNull(group);
+            Assert.Null(group.Subjects.FirstOrDefault(s => s.Name == "Administracja Intenetowymi Systemami Baz Danych"));
+        }
+
+        [Fact]
+        public void AttachTeacherToSubject()
+        {
+            var attachSubjectTeacher = new AttachDetachSubjectToTeacherVm()
+            {
+                SubjectId = 5,   // Subject 5 currently has TeacherId=12
+                TeacherId = 2    // Reassign to Teacher 2
+            };
+            var subject = _groupService.AttachTeacherToSubject(attachSubjectTeacher);
+            Assert.NotNull(subject);
+            Assert.True(subject.TeacherId == attachSubjectTeacher.TeacherId);
+        }
+
+        [Fact]
+        public void DetachTeacherToSubject()
+        {
+            var detachSubjectTeacher = new AttachDetachSubjectToTeacherVm()
+            {
+                SubjectId = 3,   // Subject 3 has TeacherId=2
+                TeacherId = 2
+            };
+            var subject = _groupService.DetachTeacherFromSubject(detachSubjectTeacher);
+            Assert.NotNull(subject);
+            Assert.Null(subject.TeacherId);
+            Assert.Null(subject.TeacherName);
         }
     }
 }

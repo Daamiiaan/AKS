@@ -1,5 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SchoolRegister.DAL.EF;
 using SchoolRegister.Model.DataModels;
@@ -10,64 +14,78 @@ namespace SchoolRegister.Services.ConcreteServices
 {
     public class TeacherService : BaseService, ITeacherService
     {
-        public TeacherService(ApplicationDbContext dbContext, IMapper mapper, ILogger logger)
-            : base(dbContext, mapper, logger) { }
+        private readonly UserManager<User> _userManager;
 
-        public TeacherVm? GetTeacher(int id)
+        public TeacherService(ApplicationDbContext dbContext, IMapper mapper, ILogger logger,
+            UserManager<User> userManager) : base(dbContext, mapper, logger)
         {
-            var teacher = DbContext.Users.OfType<Teacher>().FirstOrDefault(t => t.Id == id);
-            return teacher == null ? null : Mapper.Map<TeacherVm>(teacher);
+            _userManager = userManager;
         }
 
-        public IEnumerable<TeacherVm> GetTeachers(Func<TeacherVm, bool>? filterPredicate = null)
+        public TeacherVm GetTeacher(Expression<Func<Teacher, bool>> filterPredicate)
         {
-            var teachers = DbContext.Users.OfType<Teacher>().ToList();
-            var teacherVms = Mapper.Map<IEnumerable<TeacherVm>>(teachers);
-            return filterPredicate == null ? teacherVms : teacherVms.Where(filterPredicate);
-        }
-
-        public TeacherVm AttachSubjectToTeacher(AttachDetachSubjectToTeacherVm vm)
-        {
-            var teacher = DbContext.Users.OfType<Teacher>().FirstOrDefault(t => t.Id == vm.TeacherId)
-                ?? throw new ArgumentException($"Teacher with id {vm.TeacherId} not found.");
-            var subject = DbContext.Subjects.FirstOrDefault(s => s.Id == vm.SubjectId)
-                ?? throw new ArgumentException($"Subject with id {vm.SubjectId} not found.");
-
-            subject.TeacherId = teacher.Id;
-            DbContext.SaveChanges();
-            return Mapper.Map<TeacherVm>(teacher);
-        }
-
-        public TeacherVm DetachSubjectFromTeacher(AttachDetachSubjectToTeacherVm vm)
-        {
-            var teacher = DbContext.Users.OfType<Teacher>().FirstOrDefault(t => t.Id == vm.TeacherId)
-                ?? throw new ArgumentException($"Teacher with id {vm.TeacherId} not found.");
-            var subject = DbContext.Subjects.FirstOrDefault(s => s.Id == vm.SubjectId && s.TeacherId == vm.TeacherId)
-                ?? throw new ArgumentException($"Subject with id {vm.SubjectId} is not assigned to teacher {vm.TeacherId}.");
-
-            subject.TeacherId = null;
-            DbContext.SaveChanges();
-            return Mapper.Map<TeacherVm>(teacher);
-        }
-
-        public TeachersGroupsVm? GetTeachersGroups(int teacherId)
-        {
-            var teacher = DbContext.Users.OfType<Teacher>().FirstOrDefault(t => t.Id == teacherId);
-            if (teacher == null) return null;
-
-            var subjects = DbContext.Subjects.Where(s => s.TeacherId == teacherId).ToList();
-            var subjectIds = subjects.Select(s => s.Id).ToList();
-
-            var groups = DbContext.Groups
-                .Where(g => g.SubjectGroups.Any(sg => subjectIds.Contains(sg.SubjectId)))
-                .ToList();
-
-            return new TeachersGroupsVm
+            try
             {
-                TeacherId = teacher.Id,
-                TeacherName = $"{teacher.FirstName} {teacher.LastName}",
-                Groups = Mapper.Map<IList<GroupVm>>(groups)
-            };
+                if (filterPredicate == null)
+                    throw new ArgumentNullException("FilterPredicate is null");
+
+                var teacher = DbContext.Users.OfType<Teacher>().FirstOrDefault(filterPredicate);
+                return Mapper.Map<TeacherVm>(teacher);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, ex.Message);
+                throw;
+            }
+        }
+
+        public IEnumerable<TeacherVm> GetTeachers(Expression<Func<Teacher, bool>> filterPredicate = null)
+        {
+            try
+            {
+                var teachers = DbContext.Users.OfType<Teacher>().AsQueryable();
+                if (filterPredicate != null)
+                    teachers = teachers.Where(filterPredicate);
+
+                return Mapper.Map<IEnumerable<TeacherVm>>(teachers.ToList());
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, ex.Message);
+                throw;
+            }
+        }
+
+        public IEnumerable<GroupVm> GetTeachersGroups(TeachersGroupsVm getTeachersGroups)
+        {
+            try
+            {
+                if (getTeachersGroups == null)
+                    throw new ArgumentNullException("ViewModel is null");
+
+                // For each subject taught by this teacher, add all groups assigned to that subject
+                var result = new List<GroupVm>();
+                var subjects = DbContext.Subjects
+                    .Where(s => s.TeacherId == getTeachersGroups.TeacherId)
+                    .ToList();
+
+                foreach (var subject in subjects)
+                {
+                    var groups = DbContext.SubjectGroups
+                        .Where(sg => sg.SubjectId == subject.Id)
+                        .Select(sg => sg.Group)
+                        .ToList();
+
+                    result.AddRange(Mapper.Map<IEnumerable<GroupVm>>(groups));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, ex.Message);
+                throw;
+            }
         }
     }
 }

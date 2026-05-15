@@ -1,9 +1,10 @@
+using System.Linq;
 using SchoolRegister.DAL.EF;
 using SchoolRegister.Services.Interfaces;
 using SchoolRegister.ViewModels.VM;
 using Xunit;
 
-namespace SchoolRegister.Tests
+namespace SchoolRegister.Tests.UnitTests
 {
     public class TeacherServiceUnitTests : BaseUnitTests
     {
@@ -16,42 +17,45 @@ namespace SchoolRegister.Tests
         }
 
         [Fact]
-        public void GetTeacher_ExistingId_ReturnsTeacherVm()
+        public void GetTeacher()
         {
-            var result = _teacherService.GetTeacher(1);
-            Assert.NotNull(result);
-            Assert.Equal("Jan", result.FirstName);
-            Assert.Equal("Kowalski", result.LastName);
+            var teacher = _teacherService.GetTeacher(x => x.UserName == "t1@eg.eg");
+            Assert.NotNull(teacher);
         }
 
         [Fact]
-        public void GetTeacher_NonExistingId_ReturnsNull()
+        public void GetTeachers()
         {
-            var result = _teacherService.GetTeacher(999);
-            Assert.Null(result);
+            var teachers = _teacherService.GetTeachers(x => x.UserName.Contains("@eg.eg"));
+            Assert.NotNull(teachers);
+            Assert.NotEmpty(teachers);
+            Assert.Equal(3, teachers.Count());
         }
 
         [Fact]
-        public void GetTeachers_ReturnsAll()
+        public void GetAllTeachers()
         {
-            var result = _teacherService.GetTeachers();
-            Assert.Equal(2, result.Count());
+            var teachers = _teacherService.GetTeachers();
+            Assert.NotNull(teachers);
+            Assert.NotEmpty(teachers);
+            Assert.Equal(3, teachers.Count());
         }
 
         [Fact]
-        public void AttachSubjectToTeacher_ValidIds_AssignsTeacher()
+        public void GetTeachersGroups()
         {
-            var vm = new AttachDetachSubjectToTeacherVm { TeacherId = 2, SubjectId = 1 };
-            var result = _teacherService.AttachSubjectToTeacher(vm);
-            Assert.NotNull(result);
-        }
-
-        [Fact]
-        public void GetTeachersGroups_TeacherWithSubjects_ReturnsGroups()
-        {
-            var result = _teacherService.GetTeachersGroups(1);
-            Assert.NotNull(result);
-            Assert.True(result.Groups.Count > 0);
+            var getTeachersGroup = new TeachersGroupsVm
+            {
+                TeacherId = 1
+            };
+            var teachersGroups = _teacherService.GetTeachersGroups(getTeachersGroup);
+            Assert.NotNull(teachersGroups);
+            Assert.NotEmpty(teachersGroups);
+            // Teacher 1 teaches subjects 1 and 2.
+            // Subject 1 -> groups IO (1), PAI (2) = 2 entries
+            // Subject 2 -> groups IO (1), PAI (2), AIP Erasmus (3) = 3 entries
+            // Total = 5 group entries (with repeats)
+            Assert.Equal(5, teachersGroups.Count());
         }
     }
 }

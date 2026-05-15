@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using SchoolRegister.DAL.EF;
@@ -12,39 +16,75 @@ namespace SchoolRegister.Services.ConcreteServices
         public SubjectService(ApplicationDbContext dbContext, IMapper mapper, ILogger logger)
             : base(dbContext, mapper, logger) { }
 
-        public SubjectVm? GetSubject(int id)
+        public SubjectVm AddOrUpdateSubject(AddOrUpdateSubjectVm addOrUpdateVm)
         {
-            var subject = DbContext.Subjects.FirstOrDefault(s => s.Id == id);
-            return subject == null ? null : Mapper.Map<SubjectVm>(subject);
-        }
-
-        public IEnumerable<SubjectVm> GetSubjects(Func<SubjectVm, bool>? filterPredicate = null)
-        {
-            var subjects = DbContext.Subjects.ToList();
-            var subjectVms = Mapper.Map<IEnumerable<SubjectVm>>(subjects);
-            return filterPredicate == null ? subjectVms : subjectVms.Where(filterPredicate);
-        }
-
-        public SubjectVm AddOrUpdateSubject(AddOrUpdateSubjectVm addOrUpdateSubjectVm)
-        {
-            if (addOrUpdateSubjectVm.Id.HasValue)
+            try
             {
-                var existing = DbContext.Subjects.FirstOrDefault(s => s.Id == addOrUpdateSubjectVm.Id.Value);
-                if (existing == null)
-                    throw new ArgumentException($"Subject with id {addOrUpdateSubjectVm.Id} not found.");
+                if (addOrUpdateVm == null)
+                    throw new ArgumentNullException("View model parameter is null");
 
-                existing.Name = addOrUpdateSubjectVm.Name;
-                existing.Description = addOrUpdateSubjectVm.Description;
-                existing.TeacherId = addOrUpdateSubjectVm.TeacherId;
+                Subject subjectEntity;
+
+                if (!addOrUpdateVm.Id.HasValue || addOrUpdateVm.Id == 0)
+                {
+                    // Create new subject
+                    subjectEntity = Mapper.Map<Subject>(addOrUpdateVm);
+                    DbContext.Subjects.Add(subjectEntity);
+                }
+                else
+                {
+                    // Update existing subject (find-and-modify to preserve navigation props)
+                    subjectEntity = DbContext.Subjects
+                        .FirstOrDefault(s => s.Id == addOrUpdateVm.Id.Value)
+                        ?? throw new ArgumentException($"Subject with id {addOrUpdateVm.Id} not found.");
+
+                    subjectEntity.Name = addOrUpdateVm.Name;
+                    subjectEntity.Description = addOrUpdateVm.Description;
+                    subjectEntity.TeacherId = addOrUpdateVm.TeacherId;
+                }
+
                 DbContext.SaveChanges();
-                return Mapper.Map<SubjectVm>(existing);
+                var subjectVm = Mapper.Map<SubjectVm>(subjectEntity);
+                return subjectVm;
             }
-            else
+            catch (Exception ex)
             {
-                var newSubject = Mapper.Map<Subject>(addOrUpdateSubjectVm);
-                DbContext.Subjects.Add(newSubject);
-                DbContext.SaveChanges();
-                return Mapper.Map<SubjectVm>(newSubject);
+                Logger.LogError(ex, ex.Message);
+                throw;
+            }
+        }
+
+        public SubjectVm GetSubject(Expression<Func<Subject, bool>> filterExpression)
+        {
+            try
+            {
+                if (filterExpression == null)
+                    throw new ArgumentNullException("FilterExpression is null");
+
+                var subjectEntity = DbContext.Subjects.FirstOrDefault(filterExpression);
+                return Mapper.Map<SubjectVm>(subjectEntity);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, ex.Message);
+                throw;
+            }
+        }
+
+        public IEnumerable<SubjectVm> GetSubjects(Expression<Func<Subject, bool>> filterExpression = null)
+        {
+            try
+            {
+                var subjectEntities = DbContext.Subjects.AsQueryable();
+                if (filterExpression != null)
+                    subjectEntities = subjectEntities.Where(filterExpression);
+
+                return Mapper.Map<IEnumerable<SubjectVm>>(subjectEntities.ToList());
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, ex.Message);
+                throw;
             }
         }
     }

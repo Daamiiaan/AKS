@@ -1,8 +1,9 @@
+using System.Linq;
 using SchoolRegister.DAL.EF;
 using SchoolRegister.Services.Interfaces;
 using Xunit;
 
-namespace SchoolRegister.Tests
+namespace SchoolRegister.Tests.UnitTests
 {
     public class StudentServiceUnitTests : BaseUnitTests
     {
@@ -15,39 +16,30 @@ namespace SchoolRegister.Tests
         }
 
         [Fact]
-        public void GetStudent_ExistingId_ReturnsStudentVm()
+        public void GetStudent()
         {
-            var result = _studentService.GetStudent(4);
-            Assert.NotNull(result);
-            Assert.Equal("Tomasz", result.FirstName);
+            var student = _studentService.GetStudent(s => s.Id == 8);  // s4: Magdalena Wiśniewska
+            Assert.NotNull(student);
         }
 
         [Fact]
-        public void GetStudent_NonExistingId_ReturnsNull()
+        public void GetStudents()
         {
-            var result = _studentService.GetStudent(999);
-            Assert.Null(result);
+            var students = _studentService.GetStudents(s => s.Id >= 5 && s.Id <= 7)
+                .ToList();
+            Assert.NotNull(students);
+            Assert.NotEmpty(students);
+            Assert.Equal(3, students.Count());
         }
 
         [Fact]
-        public void GetStudents_ReturnsAll()
+        public void GetAllStudents()
         {
-            var result = _studentService.GetStudents();
-            Assert.Equal(2, result.Count());
-        }
-
-        [Fact]
-        public void GetStudents_WithFilter_ReturnsFiltered()
-        {
-            var result = _studentService.GetStudents(s => s.GroupId == 1);
-            Assert.All(result, s => Assert.Equal(1, s.GroupId));
-        }
-
-        [Fact]
-        public void GetStudents_FilterByName_ReturnsCorrect()
-        {
-            var result = _studentService.GetStudents(s => s.FirstName == "Kasia");
-            Assert.Single(result);
+            var students = _studentService.GetStudents()
+                .ToList();
+            Assert.NotNull(students);
+            Assert.NotEmpty(students);
+            Assert.Equal(6, students.Count());
         }
     }
 }

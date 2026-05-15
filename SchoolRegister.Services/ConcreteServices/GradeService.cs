@@ -1,4 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SchoolRegister.DAL.EF;
 using SchoolRegister.Model.DataModels;
@@ -9,57 +13,100 @@ namespace SchoolRegister.Services.ConcreteServices
 {
     public class GradeService : BaseService, IGradeService
     {
-        public GradeService(ApplicationDbContext dbContext, IMapper mapper, ILogger logger)
-            : base(dbContext, mapper, logger) { }
+        private readonly UserManager<User> _userManager;
 
-        public GradeVm AddGradeToStudent(AddGradeToStudentVm vm)
+        public GradeService(ApplicationDbContext dbContext, IMapper mapper, ILogger logger,
+            UserManager<User> userManager) : base(dbContext, mapper, logger)
         {
-            var teacher = DbContext.Users.OfType<Teacher>().FirstOrDefault(t => t.Id == vm.TeacherId)
-                ?? throw new ArgumentException($"Teacher with id {vm.TeacherId} not found.");
-
-            var subject = DbContext.Subjects.FirstOrDefault(s => s.Id == vm.SubjectId && s.TeacherId == vm.TeacherId)
-                ?? throw new ArgumentException($"Teacher {vm.TeacherId} does not teach subject {vm.SubjectId}.");
-
-            var student = DbContext.Users.OfType<Student>().FirstOrDefault(s => s.Id == vm.StudentId)
-                ?? throw new ArgumentException($"Student with id {vm.StudentId} not found.");
-
-            var grade = new Grade
-            {
-                DateOfIssue = DateTime.Now,
-                GradeValue = vm.GradeValue,
-                SubjectId = vm.SubjectId,
-                StudentId = vm.StudentId
-            };
-
-            DbContext.Grades.Add(grade);
-            DbContext.SaveChanges();
-            return Mapper.Map<GradeVm>(grade);
+            _userManager = userManager;
         }
 
-        public GradesReportVm? GetGradesReportForStudent(GetGradesReportVm vm)
+        public GradeVm AddGradeToStudent(AddGradeToStudentVm addGradeToStudentVm)
         {
-            Student? student = null;
-
-            if (vm.StudentId.HasValue)
+            try
             {
-                student = DbContext.Users.OfType<Student>().FirstOrDefault(s => s.Id == vm.StudentId.Value);
+                if (addGradeToStudentVm == null)
+                    throw new ArgumentNullException("View model parameter is null");
+
+                // Verify teacher exists
+                var teacher = DbContext.Users.OfType<Teacher>()
+                    .FirstOrDefault(t => t.Id == addGradeToStudentVm.TeacherId)
+                    ?? throw new ArgumentException($"Teacher with id {addGradeToStudentVm.TeacherId} not found.");
+
+                // Verify teacher teaches the subject
+                var subject = DbContext.Subjects
+                    .FirstOrDefault(s => s.Id == addGradeToStudentVm.SubjectId
+                                         && s.TeacherId == addGradeToStudentVm.TeacherId)
+                    ?? throw new ArgumentException(
+                        $"Teacher {addGradeToStudentVm.TeacherId} does not teach subject {addGradeToStudentVm.SubjectId}.");
+
+                // Verify student exists
+                var student = DbContext.Users.OfType<Student>()
+                    .FirstOrDefault(s => s.Id == addGradeToStudentVm.StudentId)
+                    ?? throw new ArgumentException($"Student with id {addGradeToStudentVm.StudentId} not found.");
+
+                var grade = new Grade
+                {
+                    DateOfIssue = DateTime.Now,
+                    GradeValue = addGradeToStudentVm.GradeValue,
+                    SubjectId = addGradeToStudentVm.SubjectId,
+                    StudentId = addGradeToStudentVm.StudentId
+                };
+
+                DbContext.Grades.Add(grade);
+                DbContext.SaveChanges();
+                return Mapper.Map<GradeVm>(grade);
             }
-            else if (vm.ParentId.HasValue)
+            catch (Exception ex)
             {
-                student = DbContext.Users.OfType<Student>().FirstOrDefault(s => s.ParentId == vm.ParentId.Value);
+                Logger.LogError(ex, ex.Message);
+                throw;
             }
+        }
 
-            if (student == null) return null;
-
-            var grades = DbContext.Grades.Where(g => g.StudentId == student.Id).ToList();
-
-            return new GradesReportVm
+        public GradesReportVm GetGradesReportForStudent(GetGradesReportVm getGradesVm)
+        {
+            try
             {
-                StudentId = student.Id,
-                StudentFirstName = student.FirstName,
-                StudentLastName = student.LastName,
-                Grades = Mapper.Map<IList<GradeVm>>(grades)
-            };
+                if (getGradesVm == null)
+                    throw new ArgumentNullException("View model parameter is null");
+
+                // Find student
+                var student = DbContext.Users.OfType<Student>()
+                    .FirstOrDefault(s => s.Id == getGradesVm.StudentId)
+                    ?? throw new ArgumentException($"Student with id {getGradesVm.StudentId} not found.");
+
+                // Determine access rights using type checking (TPH discriminator)
+                bool isTeacher = DbContext.Users.OfType<Teacher>()
+                    .Any(t => t.Id == getGradesVm.GetterUserId);
+
+                bool isOwnStudent = DbContext.Users.OfType<Student>()
+                    .Any(s => s.Id == getGradesVm.GetterUserId && s.Id == getGradesVm.StudentId);
+
+                bool isParentOfStudent = DbContext.Users.OfType<Parent>()
+                    .Any(p => p.Id == getGradesVm.GetterUserId
+                              && DbContext.Users.OfType<Student>()
+                                  .Any(s => s.Id == getGradesVm.StudentId && s.ParentId == p.Id));
+
+                if (!isTeacher && !isOwnStudent && !isParentOfStudent)
+                    throw new UnauthorizedAccessException(
+                        $"User {getGradesVm.GetterUserId} is not authorized to view grades of student {getGradesVm.StudentId}.");
+
+                var grades = DbContext.Grades.Where(g => g.StudentId == student.Id).ToList();
+
+                return new GradesReportVm
+                {
+                    StudentId = student.Id,
+                    StudentFirstName = student.FirstName,
+                    StudentLastName = student.LastName,
+                    Grades = Mapper.Map<IList<GradeVm>>(grades)
+                };
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, ex.Message);
+                throw;
+            }
         }
     }
 }

@@ -1,57 +1,75 @@
+using System.Linq;
 using SchoolRegister.DAL.EF;
 using SchoolRegister.Services.Interfaces;
 using SchoolRegister.ViewModels.VM;
 using Xunit;
 
-namespace SchoolRegister.Tests
+namespace SchoolRegister.Tests.UnitTests
 {
     public class SubjectServiceUnitTests : BaseUnitTests
     {
         private readonly ISubjectService _subjectService;
 
-        public SubjectServiceUnitTests(ApplicationDbContext dbContext, ISubjectService subjectService)
+        public SubjectServiceUnitTests(ISubjectService subjectService, ApplicationDbContext dbContext)
             : base(dbContext)
         {
             _subjectService = subjectService;
         }
 
         [Fact]
-        public void GetSubject_ExistingId_ReturnsSubjectVm()
+        public void GetSubject()
         {
-            var result = _subjectService.GetSubject(1);
-            Assert.NotNull(result);
-            Assert.Equal("Matematyka", result.Name);
+            var subject = _subjectService.GetSubject(x => x.Name == "Programowanie obiektowe");
+            Assert.NotNull(subject);
         }
 
         [Fact]
-        public void GetSubject_NonExistingId_ReturnsNull()
+        public void GetSubjects()
         {
-            var result = _subjectService.GetSubject(999);
-            Assert.Null(result);
+            var subjects = _subjectService.GetSubjects(x => x.Id > 2 && x.Id <= 4)
+                .ToList();
+            Assert.NotNull(subjects);
+            Assert.NotEmpty(subjects);
+            Assert.Equal(2, subjects.Count());
         }
 
         [Fact]
-        public void GetSubjects_ReturnsAll()
+        public void GetAllSubjects()
         {
-            var result = _subjectService.GetSubjects();
-            Assert.Equal(3, result.Count());
+            var subjects = _subjectService.GetSubjects().ToList();
+            Assert.NotNull(subjects);
+            Assert.NotEmpty(subjects);
+            Assert.Equal(DbContext.Subjects.Count(), subjects.Count());
         }
 
         [Fact]
-        public void AddOrUpdateSubject_NewSubject_AddsSubject()
+        public void AddNewSubject()
         {
-            var vm = new AddOrUpdateSubjectVm { Name = "Chemia", TeacherId = 1 };
-            var result = _subjectService.AddOrUpdateSubject(vm);
-            Assert.NotNull(result);
-            Assert.Equal("Chemia", result.Name);
+            var newSubjectVm = new AddOrUpdateSubjectVm()
+            {
+                Name = "Zaawansowane programowanie internetowe",
+                Description = "W ramach przedmiotu studenci tworzą rozwiązania w bibliotekach SPA",
+                TeacherId = 1
+            };
+            var createdSubject = _subjectService.AddOrUpdateSubject(newSubjectVm);
+            Assert.NotNull(createdSubject);
+            Assert.Equal("Zaawansowane programowanie internetowe", createdSubject.Name);
         }
 
         [Fact]
-        public void AddOrUpdateSubject_ExistingSubject_UpdatesName()
+        public void EditSubject()
         {
-            var vm = new AddOrUpdateSubjectVm { Id = 1, Name = "Matematyka zaawansowana", TeacherId = 1 };
-            var result = _subjectService.AddOrUpdateSubject(vm);
-            Assert.Equal("Matematyka zaawansowana", result.Name);
+            var editSubjectVm = new AddOrUpdateSubjectVm()
+            {
+                Id = 1,
+                Name = "Aplikacje webowe",
+                Description = null,
+                TeacherId = 1
+            };
+            var editedSubjectVm = _subjectService.AddOrUpdateSubject(editSubjectVm);
+            Assert.NotNull(editedSubjectVm);
+            Assert.Equal("Aplikacje webowe", editedSubjectVm.Name);
+            Assert.Null(editedSubjectVm.Description);
         }
     }
 }

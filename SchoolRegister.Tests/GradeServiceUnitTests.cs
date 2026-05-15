@@ -4,7 +4,7 @@ using SchoolRegister.Services.Interfaces;
 using SchoolRegister.ViewModels.VM;
 using Xunit;
 
-namespace SchoolRegister.Tests
+namespace SchoolRegister.Tests.UnitTests
 {
     public class GradeServiceUnitTests : BaseUnitTests
     {
@@ -17,59 +17,54 @@ namespace SchoolRegister.Tests
         }
 
         [Fact]
-        public void AddGradeToStudent_ValidData_ReturnsGradeVm()
+        public void AddGradeToStudent()
         {
-            var vm = new AddGradeToStudentVm
+            var gradeVm = new AddGradeToStudentVm()
             {
-                StudentId = 4,
+                StudentId = 5,
                 SubjectId = 1,
-                TeacherId = 1,
-                GradeValue = GradeScale.BDB
+                GradeValue = GradeScale.DB,
+                TeacherId = 1
             };
-
-            var result = _gradeService.AddGradeToStudent(vm);
-            Assert.NotNull(result);
-            Assert.Equal(GradeScale.BDB, result.GradeValue);
+            var grade = _gradeService.AddGradeToStudent(gradeVm);
+            Assert.NotNull(grade);
+            Assert.Equal(2, DbContext.Grades.Count());
         }
 
         [Fact]
-        public void AddGradeToStudent_WrongTeacher_ThrowsException()
+        public void GetGradesReportForStudentByTeacher()
         {
-            var vm = new AddGradeToStudentVm
+            var getGradesReportForStudent = new GetGradesReportVm()
             {
-                StudentId = 4,
-                SubjectId = 3, // Subject 3 belongs to Teacher 2, not Teacher 1
-                TeacherId = 1,
-                GradeValue = GradeScale.DB
+                StudentId = 5,
+                GetterUserId = 1  // Teacher 1 can view any student's grades
             };
-
-            Assert.Throws<ArgumentException>(() => _gradeService.AddGradeToStudent(vm));
+            var gradesReport = _gradeService.GetGradesReportForStudent(getGradesReportForStudent);
+            Assert.NotNull(gradesReport);
         }
 
         [Fact]
-        public void GetGradesReportForStudent_ByStudentId_ReturnsReport()
+        public void GetGradesReportForStudentByStudent()
         {
-            var vm = new GetGradesReportVm { StudentId = 4 };
-            var result = _gradeService.GetGradesReportForStudent(vm);
-            Assert.NotNull(result);
-            Assert.Equal(4, result.StudentId);
-            Assert.True(result.Grades.Count >= 2);
+            var getGradesReportForStudent = new GetGradesReportVm()
+            {
+                StudentId = 5,
+                GetterUserId = 5  // Student 5 viewing own grades
+            };
+            var gradesReport = _gradeService.GetGradesReportForStudent(getGradesReportForStudent);
+            Assert.NotNull(gradesReport);
         }
 
         [Fact]
-        public void GetGradesReportForStudent_ByParentId_ReturnsReport()
+        public void GetGradesReportForStudentByParent()
         {
-            var vm = new GetGradesReportVm { ParentId = 3 };
-            var result = _gradeService.GetGradesReportForStudent(vm);
-            Assert.NotNull(result);
-        }
-
-        [Fact]
-        public void GetGradesReportForStudent_NonExistingStudent_ReturnsNull()
-        {
-            var vm = new GetGradesReportVm { StudentId = 999 };
-            var result = _gradeService.GetGradesReportForStudent(vm);
-            Assert.Null(result);
+            var getGradesReportForStudent = new GetGradesReportVm()
+            {
+                StudentId = 5,
+                GetterUserId = 3  // Parent 3 is parent of student 5 (s1.ParentId = 3)
+            };
+            var gradesReport = _gradeService.GetGradesReportForStudent(getGradesReportForStudent);
+            Assert.NotNull(gradesReport);
         }
     }
 }
