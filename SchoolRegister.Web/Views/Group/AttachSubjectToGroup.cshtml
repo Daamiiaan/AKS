@@ -1,0 +1,27 @@
+@model SchoolRegister.ViewModels.VM.AttachDetachSubjectGroupVm
+@{
+    ViewData["Title"] = "Attach Subject to Group";
+}
+
+<h2>Attach Subject to Group</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AttachSubjectToGroup">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="SubjectId" type="hidden" />
+            <div class="form-group">
+                <label class="control-label">Group</label>
+                <select asp-for="GroupId" class="form-control"
+                        asp-items="@ViewBag.GroupsSelectList"></select>
+                <span asp-validation-for="GroupId" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="Attach" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<a asp-controller="Subject" asp-action="Index">Back to Subjects</a>

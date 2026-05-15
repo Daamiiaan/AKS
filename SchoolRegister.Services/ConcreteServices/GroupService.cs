@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SchoolRegister.DAL.EF;
 using SchoolRegister.Model.DataModels;
@@ -29,7 +30,10 @@ namespace SchoolRegister.Services.ConcreteServices
                 if (filterPredicate == null)
                     throw new ArgumentNullException("FilterPredicate is null");
 
-                var group = DbContext.Groups.FirstOrDefault(filterPredicate);
+                var group = DbContext.Groups
+                    .Include(g => g.Students)
+                    .Include(g => g.SubjectGroups).ThenInclude(sg => sg.Subject)
+                    .FirstOrDefault(filterPredicate);
                 return Mapper.Map<GroupVm>(group);
             }
             catch (Exception ex)
@@ -43,7 +47,10 @@ namespace SchoolRegister.Services.ConcreteServices
         {
             try
             {
-                var groups = DbContext.Groups.AsQueryable();
+                var groups = DbContext.Groups
+                    .Include(g => g.Students)
+                    .Include(g => g.SubjectGroups).ThenInclude(sg => sg.Subject)
+                    .AsQueryable();
                 if (filterPredicate != null)
                     groups = groups.Where(filterPredicate);
 

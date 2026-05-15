@@ -1,11 +1,19 @@
 is_global = true
 build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
 build_property.TargetPlatformMinVersion = 
 build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
 build_property.ProjectTypeGuids = 
 build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
 build_property.PlatformNeutralAssembly = 
 build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = SchoolRegister.Web
 build_property.RootNamespace = SchoolRegister.Web
@@ -14,14 +22,66 @@ build_property.EnableComHosting =
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
-build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = true
 build_property.MSBuildProjectDirectory = C:\Users\Damian\Documents\aks1\AKS\SchoolRegister.Web
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Areas/Identity/Pages/Account/Manage/RegisterNewUsers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcUmVnaXN0ZXJOZXdVc2Vycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Areas/Identity/Pages/Account/Manage/_ManageLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcX01hbmFnZUxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Areas/Identity/Pages/Account/Manage/_ManageNav.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcX01hbmFnZU5hdi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Areas/Identity/Pages/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Areas/Identity/Pages/_StatusMessage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1N0YXR1c01lc3NhZ2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZhbGlkYXRpb25TY3JpcHRzUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Areas/Identity/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/Grade/AddGrade.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JhZGVcQWRkR3JhZGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/Group/AddOrEditGroup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBcQWRkT3JFZGl0R3JvdXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/Group/AttachStudentToGroup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBcQXR0YWNoU3R1ZGVudFRvR3JvdXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/Group/AttachSubjectToGroup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBcQXR0YWNoU3ViamVjdFRvR3JvdXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/Group/DetachStudentFromGroup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBcRGV0YWNoU3R1ZGVudEZyb21Hcm91cC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/Group/DetachSubjectToGroup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBcRGV0YWNoU3ViamVjdFRvR3JvdXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/Group/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/Home/Index.cshtml]
@@ -42,6 +102,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/Student/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/Student/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/Subject/AddOrEditSubject.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdFxBZGRPckVkaXRTdWJqZWN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/Subject/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdFxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/Subject/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Damian/Documents/aks1/AKS/SchoolRegister.Web/Views/_ViewImports.cshtml]

@@ -1,0 +1,52 @@
+@using SchoolRegister.ViewModels.VM
+@model GradesReportVm
+@{
+    ViewData["Title"] = "Student Details";
+    var student = ViewBag.Student as StudentVm;
+}
+
+<h2>@student?.FirstName @student?.LastName</h2>
+
+<dl class="row">
+    <dt class="col-sm-2">Group</dt>
+    <dd class="col-sm-10">@(student?.GroupName ?? "—")</dd>
+
+    <dt class="col-sm-2">Parent</dt>
+    <dd class="col-sm-10">@(student?.ParentName ?? "—")</dd>
+</dl>
+
+<h4>Grades</h4>
+
+@if (Model?.Grades != null && Model.Grades.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Grade</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var grade in Model.Grades)
+            {
+                <tr>
+                    <td>@grade.SubjectName</td>
+                    <td>@grade.GradeValue</td>
+                    <td>@grade.DateOfIssue.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No grades yet.</p>
+}
+
+@if (User.IsInRole("Teacher"))
+{
+    <a asp-controller="Grade" asp-action="AddGrade" asp-route-studentId="@student?.Id" class="btn btn-primary">Add Grade</a>
+}
+
+<a asp-action="Index">Back to List</a>

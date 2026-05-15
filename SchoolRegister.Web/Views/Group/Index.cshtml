@@ -1,0 +1,37 @@
+@using SchoolRegister.ViewModels.VM
+@model IEnumerable<GroupVm>
+@{
+    ViewData["Title"] = "Groups";
+}
+
+<h2>Groups</h2>
+
+<p>
+    <a asp-action="AddOrEditGroup">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Students Count</th>
+            <th>Subjects Count</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Students.Count</td>
+                <td>@item.Subjects.Count</td>
+                <td>
+                    <a asp-action="AddOrEditGroup" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="AttachStudentToGroup" asp-route-groupId="@item.Id">Add Student</a> |
+                    <a asp-action="DetachStudentFromGroup" asp-route-groupId="@item.Id">Remove Student</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

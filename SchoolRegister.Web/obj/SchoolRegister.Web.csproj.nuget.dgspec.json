@@ -383,6 +383,10 @@
               "target": "Package",
               "version": "[8.0.26, )"
             },
+            "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": {
+              "target": "Package",
+              "version": "[8.0.26, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[8.0.26, )"
@@ -390,6 +394,10 @@
             "Microsoft.EntityFrameworkCore.Tools": {
               "target": "Package",
               "version": "[8.0.26, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[8.0.2, )"
             }
           },
           "imports": [

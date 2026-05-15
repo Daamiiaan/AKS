@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SchoolRegister.DAL.EF;
 using SchoolRegister.Model.DataModels;
@@ -77,6 +78,9 @@ namespace SchoolRegister.Services.ConcreteServices
                     ?? throw new ArgumentException($"Student with id {getGradesVm.StudentId} not found.");
 
                 // Determine access rights using type checking (TPH discriminator)
+                var getterUser = DbContext.Users.FirstOrDefault(u => u.Id == getGradesVm.GetterUserId);
+                bool isAdmin = getterUser != null && _userManager.IsInRoleAsync(getterUser, "Admin").Result;
+
                 bool isTeacher = DbContext.Users.OfType<Teacher>()
                     .Any(t => t.Id == getGradesVm.GetterUserId);
 
@@ -88,11 +92,13 @@ namespace SchoolRegister.Services.ConcreteServices
                               && DbContext.Users.OfType<Student>()
                                   .Any(s => s.Id == getGradesVm.StudentId && s.ParentId == p.Id));
 
-                if (!isTeacher && !isOwnStudent && !isParentOfStudent)
+                if (!isAdmin && !isTeacher && !isOwnStudent && !isParentOfStudent)
                     throw new UnauthorizedAccessException(
                         $"User {getGradesVm.GetterUserId} is not authorized to view grades of student {getGradesVm.StudentId}.");
 
-                var grades = DbContext.Grades.Where(g => g.StudentId == student.Id).ToList();
+                var grades = DbContext.Grades
+                    .Include(g => g.Subject)
+                    .Where(g => g.StudentId == student.Id).ToList();
 
                 return new GradesReportVm
                 {

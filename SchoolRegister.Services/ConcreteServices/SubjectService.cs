@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SchoolRegister.DAL.EF;
 using SchoolRegister.Model.DataModels;
@@ -61,7 +62,10 @@ namespace SchoolRegister.Services.ConcreteServices
                 if (filterExpression == null)
                     throw new ArgumentNullException("FilterExpression is null");
 
-                var subjectEntity = DbContext.Subjects.FirstOrDefault(filterExpression);
+                var subjectEntity = DbContext.Subjects
+                    .Include(s => s.Teacher)
+                    .Include(s => s.SubjectGroups).ThenInclude(sg => sg.Group)
+                    .FirstOrDefault(filterExpression);
                 return Mapper.Map<SubjectVm>(subjectEntity);
             }
             catch (Exception ex)
@@ -75,7 +79,10 @@ namespace SchoolRegister.Services.ConcreteServices
         {
             try
             {
-                var subjectEntities = DbContext.Subjects.AsQueryable();
+                var subjectEntities = DbContext.Subjects
+                    .Include(s => s.Teacher)
+                    .Include(s => s.SubjectGroups).ThenInclude(sg => sg.Group)
+                    .AsQueryable();
                 if (filterExpression != null)
                     subjectEntities = subjectEntities.Where(filterExpression);
 

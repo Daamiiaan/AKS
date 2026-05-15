@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SchoolRegister.DAL.EF;
 using SchoolRegister.Model.DataModels;
@@ -23,7 +24,10 @@ namespace SchoolRegister.Services.ConcreteServices
                 if (filterPredicate == null)
                     throw new ArgumentNullException("FilterPredicate is null");
 
-                var student = DbContext.Users.OfType<Student>().FirstOrDefault(filterPredicate);
+                var student = DbContext.Users.OfType<Student>()
+                    .Include(s => s.Group)
+                    .Include(s => s.Parent)
+                    .FirstOrDefault(filterPredicate);
                 return Mapper.Map<StudentVm>(student);
             }
             catch (Exception ex)
@@ -37,7 +41,10 @@ namespace SchoolRegister.Services.ConcreteServices
         {
             try
             {
-                var students = DbContext.Users.OfType<Student>().AsQueryable();
+                var students = DbContext.Users.OfType<Student>()
+                    .Include(s => s.Group)
+                    .Include(s => s.Parent)
+                    .AsQueryable();
                 if (filterPredicate != null)
                     students = students.Where(filterPredicate);
 
